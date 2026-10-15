@@ -1,7 +1,7 @@
 ---
 title: "mb-compile-rules"
 doc-id: "mb-10e5a376"
-updated: "2026-10-04"
+updated: "2026-10-15"
 ---
 
 # mb-compile-rules
@@ -21,9 +21,10 @@ rejected placement is removed immediately, not left for cleanup later.
 2. **Never invent a test result.** Both test cases are run for real,
    against the real `cupcake eval` command, from inside a real project
    directory. A described or assumed result is not a substitute.
-3. **Follow the naming convention exactly.** Every file, source and
-   compiled, carries the `cup-` prefix, per the project's own naming
-   standard.
+3. **Follow the naming convention exactly.** The source file keeps its
+   own name, `(rule-name).md`. The compiled file is
+   `cup-(rule-name).rego`; a rule-name that already starts with `cup-`
+   is not prefixed a second time.
 4. **The Rego package name must match the real deployment location.**
    Confirmed live, 2026-08-28: a rule placed in the global folder
    (`~/.config/cupcake/policies/opencode/`) must use a package name
@@ -45,8 +46,8 @@ rejected placement is removed immediately, not left for cleanup later.
 
 ## User-invocable
 
-Invoked as `/mb-compile-rules (rule-name)`, where `rule-name` identifies
-a real Markdown file already present in
+Invoked as `/mb-compile-rules (rule-name)`, where `rule-name` is the
+name, without `.md`, of a real Markdown file already present in
 `C:\dev\project-library-global\rules-cupcake-global\`. The developer
 supplies the rule name; this skill does not invent or guess which rule
 to compile.
@@ -56,7 +57,7 @@ to compile.
 ## Section 1 — Prerequisites
 
 1. Confirm the source file exists:
-   `C:\dev\project-library-global\rules-cupcake-global\cup-(rule-name).md`.
+   `C:\dev\project-library-global\rules-cupcake-global\(rule-name).md`.
    If it does not exist, STOP and report — do not draft a rule from
    scratch on the skill's own initiative.
 2. Confirm Cupcake is installed and `cupcake eval` is a real, runnable
@@ -76,7 +77,7 @@ to compile.
 
 ### Step 1 — Read the source
 
-Read `cup-(rule-name).md` in full. This is the real, authored intent —
+Read `(rule-name).md` in full. This is the real, authored intent —
 work from the actual text, not a summary of it.
 
 ### Step 2 — Determine the real deployment target
@@ -91,7 +92,7 @@ decision is required before Step 3, per Section 0, Hard Rule 5.
 Convert the Markdown rule into a working Rego policy. The `package`
 declaration must use `cupcake.global.policies.(name)` for a global
 target, or `cupcake.policies.(name)` for a project-local target — per
-Section 0, Hard Rule 4. Name the file `cup-(rule-name).rego`.
+Section 0, Hard Rule 4. Name the file `cup-(rule-name).rego`, per Hard Rule 3.
 
 ### Step 4 — Write two real test cases, using Cupcake's real, confirmed input schema
 
